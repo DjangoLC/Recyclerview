@@ -6,8 +6,9 @@ import android.widget.Toast
 import com.squareup.picasso.Picasso
 
 fun ImageView.loadUrl(url: String) {
+    val link = if (url.isEmpty()) "https://i0.wp.com/oij.org/wp-content/uploads/2016/05/placeholder.png?ssl=1" else "http://image.tmdb.org/t/p/w500/$url"
     Picasso.get()
-        .load(url)
+        .load(link)
         .into(this)
 }
 
