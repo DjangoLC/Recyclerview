@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">EjemploRecyclerview</string>
+    <string name="new_movies">Nuevas</string>
+    <string name="popular">Populares</string>
+    <string name="upcoming">Proximanente</string>
+    <string name="discover">Descubre</string>
 </resources>
