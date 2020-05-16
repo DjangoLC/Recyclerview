@@ -15,7 +15,7 @@ typealias onClick = (Movie) -> Unit
 class RecyclerAdapter(private val onMovieClick: onClick, private val onFavClick: onClick) :
     RecyclerView.Adapter<RecyclerAdapter.RecyclerviewAndroid>() {
 
-    var items: List<Movie> by Delegates.observable(emptyList()) { _, old, new ->
+    var items: List<Movie> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
     }
 
@@ -38,6 +38,7 @@ class RecyclerAdapter(private val onMovieClick: onClick, private val onFavClick:
         fun bind(movie: Movie, onMovie: onClick, onFav: onClick) {
             with(itemView) {
                 img.loadUrl(movie.url)
+                tvTitle.text = movie.name
                 setOnClickListener {
                     onMovie(movie)
                 }

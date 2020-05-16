@@ -1,3 +1,3 @@
 package com.example.ejemplorecyclerview.data
 
-class Movie(val name: String, val url: String)
+class Movie(val id: Int,val name: String, val url: String)
