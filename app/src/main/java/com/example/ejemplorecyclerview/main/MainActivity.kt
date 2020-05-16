@@ -3,7 +3,6 @@ package com.example.ejemplorecyclerview.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.example.ejemplorecyclerview.R
 import com.example.ejemplorecyclerview.data.Movie
 import com.example.ejemplorecyclerview.data.MovieRepository
@@ -13,7 +12,6 @@ import com.example.ejemplorecyclerview.data.local.MovieDatabase
 import com.example.ejemplorecyclerview.data.remote.RemoteDataSourceImpl
 import com.example.ejemplorecyclerview.data.remote.Retrofit
 import com.example.ejemplorecyclerview.detail.DetailActivity
-import com.example.ejemplorecyclerview.utils.toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -53,12 +51,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.chipPopular -> {
-                    toast("popular selected")
                     mAdapter.items = emptyList()
                 }
 
                 R.id.chipUpcoming -> {
-                    toast("upcoming selected")
                     mAdapter.items = emptyList()
                 }
             }
@@ -76,9 +72,9 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch {
             val movies = repository.getMoviesBy(
                 "e462893643adb76db04afff8aa0f30c0",
-                "es",
+                "es-MX",
                 1,
-                "popularity.desc",
+                "release_date.desc",
                 2020
             )
             withContext(Dispatchers.Main) {
@@ -86,6 +82,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun setUpMovies(movies: List<Movie>) {
         mAdapter.items = movies
