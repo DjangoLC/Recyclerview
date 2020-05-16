@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
 
         repository = MovieRepository(
-            NetworkServiceImpl(),
+            NetworkServiceImpl(this),
             LocalDataSourceImpl(MovieDatabase.build(this).movieDao()),
             RemoteDataSourceImpl(Retrofit.getMovieService())
         )
