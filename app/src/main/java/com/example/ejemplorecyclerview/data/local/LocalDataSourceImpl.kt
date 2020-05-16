@@ -10,8 +10,16 @@ class LocalDataSourceImpl(private val movieDao: MovieDao) : LocalDataSource {
         movieDao.insertMovies(movies)
     }
 
-    override fun getNewMovies(year: Int): List<MovieDb> {
+    override fun getNewMovies(year: Int,sortBy: String): List<MovieDb> {
         return movieDao.getNewsMovies("%$year%")
+    }
+
+    override fun getPopularMovies(): List<com.example.ejemplorecyclerview.data.local.Movie> {
+        return movieDao.getPopularMovies()
+    }
+
+    override fun getUpcomingMovies(): List<com.example.ejemplorecyclerview.data.local.Movie> {
+        return movieDao.getUpcomingMovies()
     }
 
     override fun getMovieById(movieId: Int): MovieDb {

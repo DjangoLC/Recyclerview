@@ -22,5 +22,8 @@ fun MovieWs.toDb() =
         false
     )
 
-fun MovieDb.toList() =
-    MovieList(id,title,backdrop_path,overview)
+fun MovieDb.toList() : MovieList {
+    val image = if (backdrop_path.isEmpty()) poster_path else backdrop_path
+    return MovieList(id,title,image,overview)
+}
+

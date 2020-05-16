@@ -3,7 +3,6 @@ package com.example.ejemplorecyclerview.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.example.ejemplorecyclerview.R
 import com.example.ejemplorecyclerview.data.Movie
 import com.example.ejemplorecyclerview.data.MovieRepository
@@ -13,7 +12,6 @@ import com.example.ejemplorecyclerview.data.local.MovieDatabase
 import com.example.ejemplorecyclerview.data.remote.RemoteDataSourceImpl
 import com.example.ejemplorecyclerview.data.remote.Retrofit
 import com.example.ejemplorecyclerview.detail.DetailActivity
-import com.example.ejemplorecyclerview.utils.toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -53,13 +51,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.chipPopular -> {
-                    toast("popular selected")
-                    mAdapter.items = emptyList()
+                    getPopularMovies()
                 }
 
                 R.id.chipUpcoming -> {
-                    toast("upcoming selected")
-                    mAdapter.items = emptyList()
+                    getUpcomingMovies()
                 }
             }
         }
@@ -76,10 +72,39 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch {
             val movies = repository.getMoviesBy(
                 "e462893643adb76db04afff8aa0f30c0",
-                "es",
+                "es-MX",
+                1,
+                "release_date.desc",
+                2020
+            )
+            withContext(Dispatchers.Main) {
+                setUpMovies(movies)
+            }
+        }
+    }
+
+    private fun getPopularMovies() {
+        GlobalScope.launch {
+            val movies = repository.getPopularMovies(
+                "e462893643adb76db04afff8aa0f30c0",
+                "es-MX",
                 1,
                 "popularity.desc",
                 2020
+            )
+            withContext(Dispatchers.Main) {
+                setUpMovies(movies)
+            }
+        }
+    }
+
+    private fun getUpcomingMovies() {
+        GlobalScope.launch {
+            val movies = repository.getUpcomingMovies(
+                "e462893643adb76db04afff8aa0f30c0",
+                "es-MX",
+                1,
+                "primary_release_date.desc"
             )
             withContext(Dispatchers.Main) {
                 setUpMovies(movies)
