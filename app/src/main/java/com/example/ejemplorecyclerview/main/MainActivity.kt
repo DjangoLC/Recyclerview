@@ -1,16 +1,18 @@
 package com.example.ejemplorecyclerview.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.ejemplorecyclerview.data.Movie
+import androidx.recyclerview.widget.RecyclerView
 import com.example.ejemplorecyclerview.R
+import com.example.ejemplorecyclerview.data.Movie
 import com.example.ejemplorecyclerview.data.MovieRepository
 import com.example.ejemplorecyclerview.data.NetworkServiceImpl
 import com.example.ejemplorecyclerview.data.local.LocalDataSourceImpl
 import com.example.ejemplorecyclerview.data.local.MovieDatabase
 import com.example.ejemplorecyclerview.data.remote.RemoteDataSourceImpl
 import com.example.ejemplorecyclerview.data.remote.Retrofit
+import com.example.ejemplorecyclerview.detail.DetailActivity
 import com.example.ejemplorecyclerview.utils.toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
@@ -23,14 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var repository: MovieRepository
 
     private val mAdapter: RecyclerAdapter by lazy {
-        RecyclerAdapter(
-            {
-                toast("view detail: ${it.name}")
-                Log.e("asd","${it.id}")
-            }, {
-                toast("favorite: ${it.name}")
-            }
-        )
+        RecyclerAdapter({ navigateTo(it.id) }, {})
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +65,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun navigateTo(id: Int) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.MOVIE, id)
+        startActivity(intent)
+    }
+
     private fun getNewMovies() {
         GlobalScope.launch {
-            val movies = repository.getMoviesBy("e462893643adb76db04afff8aa0f30c0","es",1, "popularity.desc", 2020)
+            val movies = repository.getMoviesBy(
+                "e462893643adb76db04afff8aa0f30c0",
+                "es",
+                1,
+                "popularity.desc",
+                2020
+            )
             withContext(Dispatchers.Main) {
                 setUpMovies(movies)
             }

@@ -1,5 +1,6 @@
 package com.example.ejemplorecyclerview.utils
 
+import com.example.ejemplorecyclerview.data.Movie as MovieList
 import com.example.ejemplorecyclerview.data.remote.Movie as MovieWs
 import com.example.ejemplorecyclerview.data.local.Movie as MovieDb
 
@@ -20,3 +21,6 @@ fun MovieWs.toDb() =
         vote_count ?: 0,
         false
     )
+
+fun MovieDb.toList() =
+    MovieList(id,title,backdrop_path,overview)

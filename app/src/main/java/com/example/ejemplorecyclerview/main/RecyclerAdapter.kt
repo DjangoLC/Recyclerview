@@ -10,7 +10,7 @@ import com.example.ejemplorecyclerview.utils.loadUrl
 import kotlinx.android.synthetic.main.row.view.*
 import kotlin.properties.Delegates
 
-typealias onClick = (Movie) -> Unit
+typealias onClick = (onMovieClick : Movie) -> Unit
 
 class RecyclerAdapter(private val onMovieClick: onClick, private val onFavClick: onClick) :
     RecyclerView.Adapter<RecyclerAdapter.RecyclerviewAndroid>() {
@@ -18,6 +18,8 @@ class RecyclerAdapter(private val onMovieClick: onClick, private val onFavClick:
     var items: List<Movie> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()
     }
+
+    var currentPage = 1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerviewAndroid {
         return RecyclerviewAndroid.fromParent(

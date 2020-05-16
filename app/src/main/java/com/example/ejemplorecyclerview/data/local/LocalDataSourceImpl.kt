@@ -13,4 +13,8 @@ class LocalDataSourceImpl(private val movieDao: MovieDao) : LocalDataSource {
     override fun getNewMovies(year: Int): List<MovieDb> {
         return movieDao.getNewsMovies("%$year%")
     }
+
+    override fun getMovieById(movieId: Int): MovieDb {
+        return movieDao.findById(movieId)
+    }
 }
