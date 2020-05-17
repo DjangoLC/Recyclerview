@@ -21,7 +21,13 @@ interface MovieDao {
     @Query("SELECT * FROM Movie WHERE favorite == 1")
     fun getFavoriteMovies(): List<MovieDb>
 
-    @Query("SELECT * FROM Movie WHERE release_date like :year")
+    @Query("SELECT * FROM Movie WHERE release_date like :year ORDER BY title")
     fun getNewsMovies(year: String): List<MovieDb>
+
+    @Query("SELECT * FROM Movie ORDER BY popularity DESC")
+    fun getPopularMovies(): List<MovieDb>
+
+    @Query("SELECT * FROM Movie ORDER BY release_date DESC")
+    fun getUpcomingMovies(): List<MovieDb>
 
 }

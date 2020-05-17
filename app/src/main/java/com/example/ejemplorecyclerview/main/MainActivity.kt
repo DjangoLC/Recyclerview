@@ -51,12 +51,13 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.chipPopular -> {
-                    mAdapter.items = emptyList()
+                    getPopularMovies()
                 }
 
                 R.id.chipUpcoming -> {
-                    mAdapter.items = emptyList()
+                    getUpcomingMovies()
                 }
+
             }
         }
     }
@@ -73,9 +74,9 @@ class MainActivity : AppCompatActivity() {
             val movies = repository.getMoviesBy(
                 "e462893643adb76db04afff8aa0f30c0",
                 "es-MX",
-                1,
-                "release_date.desc",
-                2020
+            1,
+            "release_date.desc",
+            2020
             )
             withContext(Dispatchers.Main) {
                 setUpMovies(movies)
@@ -83,6 +84,34 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getPopularMovies() {
+        GlobalScope.launch {
+            val movies = repository.getPopularMovies(
+                "e462893643adb76db04afff8aa0f30c0",
+                "es-MX",
+            1,
+            "popularity.desc",
+            2020
+            )
+            withContext(Dispatchers.Main) {
+                setUpMovies(movies)
+            }
+        }
+    }
+
+    private fun getUpcomingMovies() {
+        GlobalScope.launch {
+            val movies = repository.getUpcomingMovies(
+                "e462893643adb76db04afff8aa0f30c0",
+                "es-MX",
+                1,
+                "primary_release_date.desc"
+            )
+            withContext(Dispatchers.Main) {
+                setUpMovies(movies)
+            }
+        }
+    }
 
     private fun setUpMovies(movies: List<Movie>) {
         mAdapter.items = movies

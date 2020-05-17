@@ -17,7 +17,6 @@ fun ImageView.loadUrl(url: String) {
 
 fun ImageView.loadOriginalUrl(url: String) {
     val link = if (url.isEmpty()) "https://i0.wp.com/oij.org/wp-content/uploads/2016/05/placeholder.png?ssl=1" else "http://image.tmdb.org/t/p/original/$url"
-    Log.e("asdas",link)
     Picasso.get()
         .load(link)
         .into(this)
