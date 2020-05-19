@@ -16,14 +16,11 @@ import kotlin.properties.Delegates
 typealias onClick = (onMovieClick: Movie) -> Unit
 
 class RecyclerAdapter(private val onMovieClick: onClick, private val onFavClick: onClick) :
-    RecyclerView.Adapter<RecyclerAdapter.RecyclerviewAndroid>(), Filterable {
+    RecyclerView.Adapter<RecyclerAdapter.RecyclerviewAndroid>() {
 
     var items: List<Movie> by Delegates.observable(emptyList()) { _, _, new ->
-        items_filter = new
         notifyDataSetChanged()
     }
-
-    var items_filter = emptyList<Movie>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerviewAndroid {
         return RecyclerviewAndroid.fromParent(
@@ -32,11 +29,11 @@ class RecyclerAdapter(private val onMovieClick: onClick, private val onFavClick:
     }
 
     override fun getItemCount(): Int {
-        return items_filter.size
+        return items.size
     }
 
     override fun onBindViewHolder(holder: RecyclerviewAndroid, position: Int) {
-        holder.bind(items_filter[position], onMovieClick, onFavClick)
+        holder.bind(items[position], onMovieClick, onFavClick)
     }
 
     class RecyclerviewAndroid(view: View) : RecyclerView.ViewHolder(view) {
@@ -69,28 +66,4 @@ class RecyclerAdapter(private val onMovieClick: onClick, private val onFavClick:
 
         }
     }
-
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(query: CharSequence?): FilterResults {
-                val results = Filter.FilterResults()
-
-                results.values = if (query == null || query.isEmpty()) {
-                    items
-                } else {
-                    items.filter {
-                        it.name.toLowerCase(Locale("es_MX")).contains(query)
-                    }
-                }
-
-                return results
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                items_filter = results?.values as List<Movie>
-                notifyDataSetChanged()
-            }
-        }
-    }
-
 }
