@@ -1,6 +1,7 @@
 package com.example.ejemplorecyclerview.data.local
 
 import androidx.room.*
+import com.example.ejemplorecyclerview.data.Movie
 import com.example.ejemplorecyclerview.data.local.Movie as MovieDb
 
 @Dao
@@ -29,5 +30,8 @@ interface MovieDao {
 
     @Query("SELECT * FROM Movie ORDER BY release_date DESC")
     fun getUpcomingMovies(): List<MovieDb>
+
+    @Query("SELECT * FROM Movie WHERE title LIKE :movieName")
+    fun findMovie(movieName: String): List<MovieDb>
 
 }

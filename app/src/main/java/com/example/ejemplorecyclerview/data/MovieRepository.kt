@@ -12,35 +12,62 @@ class MovieRepository(
     private val remoteDataSource: RemoteDataSource
 ) {
 
-    suspend fun getMoviesBy(apiKey: String, language: String, page: Int, sortBy: String, primaryReleaseYear: Int
+    suspend fun getMoviesBy(
+        apiKey: String, language: String, page: Int, sortBy: String, primaryReleaseYear: Int
     ): List<MovieList> {
 
         if (networkService.isConnected()) {
-            val movies = remoteDataSource.getMoviesBy(apiKey,language,page, sortBy, primaryReleaseYear)
+            val movies =
+                remoteDataSource.getMoviesBy(apiKey, language, page, sortBy, primaryReleaseYear)
             localDataSource.save(movies.map { it.toDb() })
         }
-        return localDataSource.getNewMovies(primaryReleaseYear,sortBy)
+        return localDataSource.getNewMovies(primaryReleaseYear, sortBy)
             .map { it.toList() }
     }
 
-    suspend fun getPopularMovies(apiKey: String, language: String, page: Int, sortBy: String, primaryReleaseYear: Int) : List<MovieList> {
+    suspend fun getPopularMovies(
+        apiKey: String,
+        language: String,
+        page: Int,
+        sortBy: String,
+        primaryReleaseYear: Int
+    ): List<MovieList> {
         if (networkService.isConnected()) {
-            val movies = remoteDataSource.getMoviesBy(apiKey,language,page, sortBy, primaryReleaseYear)
+            val movies =
+                remoteDataSource.getMoviesBy(apiKey, language, page, sortBy, primaryReleaseYear)
             localDataSource.save(movies.map { it.toDb() })
         }
         return localDataSource.getPopularMovies().map { it.toList() }
     }
 
-    suspend fun getUpcomingMovies(apiKey: String, language: String, page: Int, sortBy: String) : List<MovieList> {
+    suspend fun getUpcomingMovies(
+        apiKey: String,
+        language: String,
+        page: Int,
+        sortBy: String
+    ): List<MovieList> {
         if (networkService.isConnected()) {
-            val movies = remoteDataSource.getMoviesBy(apiKey,language,page, sortBy)
+            val movies = remoteDataSource.getMoviesBy(apiKey, language, page, sortBy)
             localDataSource.save(movies.map { it.toDb() })
         }
         return localDataSource.getUpcomingMovies().map { it.toList() }
     }
 
-    fun getMoviesById(movieId: Int) : MovieList {
+    fun getMoviesById(movieId: Int): MovieList {
         return localDataSource.getMovieById(movieId).toList()
+    }
+
+    suspend fun findMovie(
+        apiKey: String,
+        language: String,
+        movieName: String,
+        page: Int
+    ): List<MovieList> {
+        if (networkService.isConnected()) {
+            val movies = remoteDataSource.findMovie(apiKey, language, movieName, page)
+            localDataSource.save(movies.map { it.toDb() })
+        }
+        return localDataSource.find(movieName).map { it.toList() }
     }
 
 }
@@ -51,10 +78,11 @@ interface NetworkService {
 
 interface LocalDataSource {
     fun save(movies: List<MovieDb>)
-    fun getNewMovies(year: Int,sortBy: String): List<MovieDb>
+    fun getNewMovies(year: Int, sortBy: String): List<MovieDb>
     fun getPopularMovies(): List<MovieDb>
     fun getUpcomingMovies(): List<MovieDb>
     fun getMovieById(movieId: Int): MovieDb
+    fun find(movieName: String): List<MovieDb>
 }
 
 interface RemoteDataSource {
@@ -66,5 +94,12 @@ interface RemoteDataSource {
     suspend fun getMoviesBy(
         apiKey: String,
         language: String, page: Int, sortBy: String
+    ): List<MovieWs>
+
+    suspend fun findMovie(
+        apiKey: String,
+        language: String,
+        movieName: String,
+        page: Int
     ): List<MovieWs>
 }

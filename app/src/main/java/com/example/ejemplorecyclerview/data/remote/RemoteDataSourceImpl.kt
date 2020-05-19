@@ -45,4 +45,22 @@ class RemoteDataSourceImpl(private val movieWs: MovieService) : RemoteDataSource
         } else emptyList()
     }
 
+    override suspend fun findMovie(
+        apiKey: String,
+        language: String,
+        movieName: String,
+        page: Int
+    ): List<MovieWs> {
+        val map = mapOf("api_key" to apiKey,"language" to language,
+            "query" to movieName, "page" to page.toString(),
+            "region" to "MX"
+        )
+
+        val response = movieWs.findMovie(map)
+
+        return if (response.isSuccessful) {
+            response.body()?.results ?: emptyList()
+        } else emptyList()
+    }
+
 }

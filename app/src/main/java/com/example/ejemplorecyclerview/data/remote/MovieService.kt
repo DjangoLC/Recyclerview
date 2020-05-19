@@ -9,4 +9,7 @@ interface MovieService {
     @GET("discover/movie")
     suspend fun getMovies(@QueryMap queries: Map<String, String>): Response<MovieResponse>
 
+    @GET("search/movie")
+    suspend fun findMovie(@QueryMap queries: Map<String, String>): Response<MovieResponse>
+
 }
